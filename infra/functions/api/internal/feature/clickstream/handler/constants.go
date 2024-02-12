@@ -7,5 +7,5 @@ const (
 	ControllerTimeout = time.Second * 10
 
 	// ClickStream.
-	ClickEventPerPageLimit = 15
+	ClickEventCountLimit = 1000
 )

@@ -2,8 +2,6 @@ module github.com/haandol/vertical-slice-go-lambda-example/api
 
 go 1.22
 
-replace github.com/haandol/vertical-slice-go-lambda-example/api/pkg => ./pkg
-
 require (
 	github.com/aws/aws-lambda-go v1.46.0
 	github.com/aws/aws-sdk-go-v2 v1.24.1

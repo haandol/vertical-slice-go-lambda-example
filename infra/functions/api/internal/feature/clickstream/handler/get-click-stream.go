@@ -98,7 +98,8 @@ func GetClickStreamRepository(ctx context.Context, path string) ([]domain.ClickE
 			":pk": &types.AttributeValueMemberS{Value: fmt.Sprintf("CLICK#EVENT#PATH#%v", path)},
 			":sk": &types.AttributeValueMemberS{Value: "CLICK#EVENT#"},
 		},
-		Limit: aws.Int32(ClickEventPerPageLimit),
+		ProjectionExpression: aws.String("ID"),
+		Limit:                aws.Int32(ClickEventCountLimit),
 	}
 	output, err := client.Query(ctx, params)
 
