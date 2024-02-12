@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@aws-cdk/aws-lambda-go-alpha": "^2.127.0-alpha.0",
+    "joi": "^17.12.1",
+    "toml": "^3.0.0"
+  }
+}
