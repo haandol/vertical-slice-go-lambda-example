@@ -10,7 +10,6 @@ import (
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/haandol/vertical-slice-go-lambda-example/api/internal/constant"
 	"github.com/haandol/vertical-slice-go-lambda-example/api/internal/feature/clickstream/handler"
 	"github.com/haandol/vertical-slice-go-lambda-example/api/pkg/middleware"
 	"github.com/haandol/vertical-slice-go-lambda-example/api/pkg/o11y"
@@ -70,9 +69,6 @@ func LambdaHandler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (eve
 		}, nil
 	}
 
-	if userID, ok := req.RequestContext.Authorizer.JWT.Claims["sub"]; ok {
-		ctx = context.WithValue(ctx, constant.AuthKeyUserID, userID)
-	}
 	return ginLambda.ProxyWithContext(ctx, req)
 }
 
