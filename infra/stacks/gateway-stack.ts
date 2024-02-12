@@ -6,19 +6,23 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 
+interface IProps extends cdk.StackProps {
+  authToken: string;
+}
+
 export class GatewayStack extends cdk.Stack {
   public readonly api: apigw.IHttpApi;
 
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: IProps) {
     super(scope, id, props);
 
     const ns = this.node.tryGetContext('ns') as string;
 
-    const authorizer = this.newLambdaAuthorizer();
+    const authorizer = this.newLambdaAuthorizer(props);
     this.api = this.newHttpApi(ns, authorizer);
   }
 
-  private newLambdaAuthorizer(): authorizers.HttpLambdaAuthorizer {
+  private newLambdaAuthorizer(props: IProps): authorizers.HttpLambdaAuthorizer {
     const fn = new lambdaNodejs.NodejsFunction(this, 'AuthorizerFunction', {
       entry: path.resolve(
         __dirname,
@@ -29,6 +33,9 @@ export class GatewayStack extends cdk.Stack {
       ),
       runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
+      environment: {
+        AUTH_TOKEN: props.authToken,
+      },
     });
     return new authorizers.HttpLambdaAuthorizer('Authorizer', fn, {
       responseTypes: [authorizers.HttpLambdaResponseType.SIMPLE],

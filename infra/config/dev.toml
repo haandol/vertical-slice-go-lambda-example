@@ -5,5 +5,8 @@ stage="Dev"
 [aws]
 region="ap-northeast-2"
 
+[auth]
+token="demo"
+
 [table.clickstream]
 name="clickstream"

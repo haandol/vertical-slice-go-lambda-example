@@ -11,6 +11,9 @@ interface IConfig {
   aws: {
     region: string;
   };
+  auth: {
+    token: string;
+  };
   table: {
     clickstream: {
       name: string;
@@ -36,6 +39,12 @@ const schema = joi
         region: joi.string().required(),
       })
       .required(),
+    auth: joi
+      .object({
+        token: joi.string().required(),
+      })
+      .required(),
+
     table: joi
       .object({
         clickstream: joi

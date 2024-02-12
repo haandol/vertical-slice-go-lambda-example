@@ -13,6 +13,7 @@ const app = new cdk.App({
 });
 
 const gatewayStack = new GatewayStack(app, `${Config.app.ns}GatewayStack`, {
+  authToken: Config.auth.token,
   env: {
     region: Config.aws.region,
   },
