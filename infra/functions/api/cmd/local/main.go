@@ -38,7 +38,7 @@ func init() {
 	}
 
 	// setup o11y
-	o11y.InitXray()
+	o11y.InitXray(logger)
 
 	// setup router
 	r = gin.Default()
