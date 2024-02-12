@@ -55,8 +55,8 @@ func init() {
 	r.Use(middleware.RecoveryWithSlog(logger, true))
 
 	rg := r.Group("/v1/clickstream")
-	rg.POST("/", handler.CreateClickEventController)
-	rg.GET("/", handler.GetClickStreamController)
+	rg.POST("/:path", handler.CreateClickEventController)
+	rg.GET("/:path", handler.GetClickStreamController)
 }
 
 func main() {

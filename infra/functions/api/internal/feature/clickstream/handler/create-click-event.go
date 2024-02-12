@@ -34,16 +34,13 @@ func CreateClickEventController(c *gin.Context) {
 	ctx, span := o11y.BeginSubSegment(ctx, "CreateClickEventController")
 	defer span.Close(nil)
 
-	req := &dto.ClickEvent{}
-	if err := c.ShouldBindJSON(req); err != nil {
-		commoninstrument.RecordBadInputError(logger, span, err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
+	path := c.Param("path")
 
-	event, err := CreateClickEventService(ctx, req)
+	event, err := CreateClickEventService(ctx, &dto.ClickEvent{
+		ID:        ulid.Make().String(),
+		Path:      path,
+		CreatedAt: time.Now().UTC().Format(time.RFC3339),
+	})
 	if err != nil {
 		commoninstrument.RecordError(logger, span, err)
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -70,10 +67,6 @@ func CreateClickEventService(ctx context.Context, req *dto.ClickEvent) (domain.C
 	commoninstrument.RecordRequest(logger, span, req)
 
 	var event domain.ClickEvent
-
-	req.ID = ulid.Make().String()
-	req.CreatedAt = time.Now().UTC().Format(time.RFC3339)
-
 	event, err := CreateClickEventRepository(ctx, req)
 	if err != nil {
 		instrument.RecordGetClickStreamError(logger, span, err)
